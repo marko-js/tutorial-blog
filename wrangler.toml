@@ -1,0 +1,18 @@
+name = "marko-blog"
+type = "javascript"
+workers_dev = true
+compatibility_date = "2022-01-06"
+kv_namespaces = [
+  { binding = "STORAGE", preview_id = "a33ce8e331f24b10a1c6bad43949f384", id = "aab664c75e4440639ddd6911a06ecaa4" }
+]
+
+[site]
+bucket = "./dist"
+entry-point = ""
+include = ["assets/**"]
+
+[build]
+command = "npm run build"
+
+[build.upload]
+format = "service-worker"
