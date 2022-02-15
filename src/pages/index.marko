@@ -1,5 +1,70 @@
+import { formatDate } from "../utils";
+
+static async function getPosts() {
+  const result = await STORAGE.get("posts", { type: "json" });
+  if (result) {
+    return result.data.reverse();
+  }
+  return [];
+}
+
 <layout>
   <main.container>
-    <h1>Hello Blog</h1>
+    <header><h1>Polo</h1></header>
+    <aside>
+      <img.avatar
+        alt="avatar"
+        src="https://pbs.twimg.com/profile_images/1392922038273077248/Jbgk8IQs_400x400.jpg"
+      >
+       A content site about
+      <a href="https://twitter.com/MarkoDevTeam" target="_blank">Marko</a>
+    </aside>
+    <await(getPosts())>
+      <@then|data|>
+        <ul.blog-list>
+          <for|post| of=data>
+            <li.blog-list-item>
+              <h3><a href=`/posts/${post.id}`>${post.title}</a></h3>
+              <small>
+                ${formatDate(post.date)} •
+                <for|coffee| from=0 to=(post.duration / 5)>☕️</for>
+                 &nbsp;${post.duration} minute read
+              </small>
+              <p>${post.caption}</p>
+            </li>
+          </for>
+        </ul>
+      </@then>
+      <@placeholder><div>Loading...</div></@placeholder>
+    </await>
   </main>
 </layout>
+
+style {
+  .container header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .avatar {
+    width: 50px;
+    border-radius: 50%;
+  }
+  .blog-list {
+    list-style-type: none;
+    margin: 40px;
+    padding: 0;
+    max-width: 760px;
+  }
+  .blog-list-item h3 {
+    font-size: 1rem;
+    margin-top: 3.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .blog-list-item a {
+    color: light-blue;
+    text-decoration: none;
+    font-size: 2em;
+    font-weight: 800;
+  }
+}
