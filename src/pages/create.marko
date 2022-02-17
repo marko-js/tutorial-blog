@@ -1,0 +1,84 @@
+export async function action({ request, url }) {
+  const [formData, dataFromKV] = await Promise.all([
+    request.formData(),
+    STORAGE.get("posts", { type: "json" }),
+  ]);
+
+  const { title, text, caption, author } = Object.fromEntries(
+    formData.entries()
+  );
+  dataFromKV.data.push({
+    title,
+    text,
+    id: dataFromKV.data.length + 1,
+    caption,
+    author,
+    duration: Math.round(text.length / 1500) + 1,
+    date: new Date().toUTCString(),
+  });
+
+  await STORAGE.put("posts", JSON.stringify(dataFromKV));
+
+  return Response.redirect(new URL("/", url), 303);
+}
+
+<layout>
+  <div.container>
+    <header.page-header><h3><a href="/">Polo</a></h3></header>
+    <header><h1>New Post</h1></header>
+    <form method="POST" action="/create">
+      <input type="text" required name="title" placeholder="Title">
+      <input type="text" required name="caption" placeholder="Caption">
+      <input type="text" required name="author" placeholder="Author">
+      <textarea
+        required
+        minlength="30"
+        name="text"
+        placeholder="Blog Post here..."
+        rows="8"
+        cols="40"
+      />
+      <button type="submit">Create Post</button>
+    </form>
+  </div>
+</layout>
+
+style {
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 2.625rem;
+  }
+  .page-header h1 {
+    font-size: 2.3rem;
+  }
+  .page-header h3 {
+    font-family: Montserrat, sans-serif;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: 42px;
+    line-height: 2.625rem;
+    font-weight: 900;
+    text-rendering: optimizeLegibility;
+    font-size: 1.4427rem;
+  }
+  h3 a {
+    display: block;
+    text-decoration: none;
+  }
+  .container form {
+    display: flex;
+    flex-direction: column;
+  }
+  input[type="text"],
+  button[type="submit"],
+  textarea {
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  button[type="submit"] {
+    background-color: #09c;
+  }
+}

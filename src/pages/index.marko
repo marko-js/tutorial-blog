@@ -11,6 +11,7 @@ static async function getPosts() {
 <layout>
   <main.container>
     <header><h1>Polo</h1></header>
+    <nav.admin><h3><a href="/create">Create</a></h3></nav>
     <aside>
       <img.avatar
         alt="avatar"
@@ -45,6 +46,11 @@ style {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .admin {
+    position: absolute;
+    top: 5px;
+    right: 30px;
   }
   .avatar {
     width: 50px;
