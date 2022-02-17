@@ -9,7 +9,13 @@ addEventListener("fetch", (event) => {
 
 async function handleEvent(event) {
   try {
-    return await getAssetFromKV(event);
+    switch (event.request.method) {
+      case "GET":
+      case "HEAD":
+        return await getAssetFromKV(event);
+      default:
+        throw new NotFoundError();
+    }
   } catch (err) {
     if (err instanceof NotFoundError) {
       const { request } = event;
