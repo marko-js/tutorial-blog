@@ -1,0 +1,78 @@
+import { formatDate } from "../../../utils";
+
+class {
+  onCreate(input) {
+    this.state = {
+      comments: input.comments
+    };
+  }
+  async handleSubmit(e, form) {
+    e.preventDefault();
+    const res = await fetch("/comments", {
+      body: new URLSearchParams(new FormData(form)),
+      method: "post",
+    });
+    const comment = await res.json();
+    this.state.comments = [...this.state.comments, comment];
+    setTimeout(() => window.scrollTo(0, document.body.scrollHeight));
+  }
+}
+
+<div>
+  <h3>Add Comment</h3>
+  <form.comment-form method="POST" action="/comments" on-submit("handleSubmit")>
+    <input type="hidden" name="postId" value=input.postId>
+    <input type="text" name="author" placeholder="Author" required>
+    <textarea
+      name="comment"
+      rows="8"
+      cols="40"
+      placeholder="Write something..."
+      required
+    />
+    <button type="submit">Submit</button>
+  </form>
+</div>
+<ul.comments>
+  <for|{ author, text, date }, index| of=state.comments || []>
+    <li.comment>
+      <hr>
+      <h3>${author}</h3>
+      <h3>${formatDate(date)}</h3>
+      <p>${text}</p>
+    </li>
+  </for>
+</ul>
+
+style {
+  .comments {
+    align-items: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+  }
+  .comment-form {
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+  }
+  input[type="text"],
+  button[type="submit"],
+  textarea {
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  button[type="submit"] {
+    background-color: #09c;
+  }
+  .comment {
+    flex-direction: column;
+    align-items: left;
+    text-decoration: none;
+  }
+}

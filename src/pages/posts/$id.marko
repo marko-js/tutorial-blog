@@ -1,0 +1,100 @@
+import { formatDate } from "../../utils";
+
+static async function getPost(id) {
+  const intId = parseInt(id, 10);
+  const result = await STORAGE.get("posts", { type: "json" });
+
+  return result.data.find((post) => post.id === intId);
+}
+static async function getComments(id) {
+  const storedComments = await STORAGE.get(`comments:${id}`, {
+    type: "json",
+  });
+  return storedComments || [];
+}
+
+$ const id = +input.params.id;
+$ const postPromise = getPost(id);
+$ const commentsPromise = getComments(id);
+
+<layout>
+  <div.container>
+    <div.post-content>
+      <header.page-header><h3><a href="/">Polo</a></h3></header>
+      <main>
+        <await(postPromise)>
+          <@then|{ title, text, date, author, duration }|>
+            <article>
+              <header>
+                <h1>${title}</h1>
+                <p>By ${author}, ${formatDate(date)}</p>
+              </header>
+              $!{text}
+              <hr>
+              <h2>Comments</h2>
+              <await(commentsPromise)>
+                <@then|comments|>
+                  <post-comments postId=id comments=comments />
+                </@then>
+                <@placeholder><div>Comments landing soon...</div></@placeholder>
+              </await>
+            </article>
+          </@then>
+          <@placeholder><div>Loading...</div></@placeholder>
+        </await>
+      </main>
+    </div>
+  </div>
+</layout>
+
+style {
+  .post-content {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 42rem;
+    padding: 2.625rem 1.3125rem;
+  }
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.625rem;
+  }
+  .page-header h3 {
+    font-family: Montserrat, sans-serif;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: 42px;
+    line-height: 2.625rem;
+    font-weight: 900;
+    text-rendering: optimizeLegibility;
+    font-size: 1.4427rem;
+  }
+  header h1 {
+    font-size: 2.3rem;
+  }
+  .post-content h3 a {
+    text-decoration: none;
+  }
+  hr {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 95%;
+  }
+  article header p {
+    font-size: 0.83255rem;
+    line-height: 1.75rem;
+    display: block;
+    margin-bottom: 1.75rem;
+    margin-top: -1.4rem;
+  }
+  img {
+    max-width: 100%;
+  }
+  pre {
+    background-color: black;
+    padding: 30px;
+    border-radius: 10px;
+    white-space: pre-wrap;
+  }
+}
