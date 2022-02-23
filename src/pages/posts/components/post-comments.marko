@@ -3,7 +3,7 @@ import { formatDate } from "../../../utils";
 class {
   onCreate(input) {
     this.state = {
-      comments: input.comments
+      newComments: [],
     };
   }
   async handleSubmit(e, form) {
@@ -13,7 +13,7 @@ class {
       method: "post",
     });
     const comment = await res.json();
-    this.state.comments = [...this.state.comments, comment];
+    this.state.newComments = [...this.state.newComments, comment];
     this.once("update", () => window.scrollTo(0, document.body.scrollHeight));
   }
 }
@@ -34,14 +34,8 @@ class {
   </form>
 </div>
 <ul.comments>
-  <for|{ author, text, date }, index| of=state.comments || []>
-    <li.comment>
-      <hr>
-      <h3>${author}</h3>
-      <h3>${formatDate(date)}</h3>
-      <p>${text}</p>
-    </li>
-  </for>
+  <${input.renderBody}/>
+  <comment-list comments=state.newComments/>
 </ul>
 
 style {
@@ -69,10 +63,5 @@ style {
   }
   button[type="submit"] {
     background-color: #09c;
-  }
-  .comment {
-    flex-direction: column;
-    align-items: left;
-    text-decoration: none;
   }
 }

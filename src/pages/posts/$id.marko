@@ -32,7 +32,9 @@ $ const commentsPromise = getComments(id);
               <h2>Comments</h2>
               <await(commentsPromise)>
                 <@then|comments|>
-                  <post-comments postId=id comments=comments />
+                  <post-comments postId=id>
+                    <comment-list comments=comments/>
+                  </post-comments>
                 </@then>
                 <@placeholder><div>Comments landing soon...</div></@placeholder>
               </await>
