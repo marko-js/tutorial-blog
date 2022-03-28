@@ -27,7 +27,7 @@ static async function getPosts() {
               <h3><a href=`/posts/${post.id}`>${post.title}</a></h3>
               <small>
                 ${formatDate(post.date)} •
-                <for|coffee| from=0 to=(post.duration / 5)>☕️</for>
+                <for from=0 to=(post.duration / 5)>☕️</for>
                  &nbsp;${post.duration} minute read
               </small>
               <p>${post.caption}</p>
