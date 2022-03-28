@@ -1,8 +1,8 @@
 export async function action({ request, url }) {
-  const [formData, dataFromKV] = await Promise.all([
-    request.formData(),
-    STORAGE.get("posts", { type: "json" }),
-  ]);
+  const formPromise = request.formData();
+  const kvPromise = STORAGE.get("posts", { type: "json" });
+  const formData = await formPromise;
+  const dataFromKV = await kvPromise;
 
   const { title, text, caption, author } = Object.fromEntries(
     formData.entries()
