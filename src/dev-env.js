@@ -6,7 +6,6 @@ import { fetch, File, FormData, Headers, Request, Response } from "undici";
 import { KVNamespace } from "@miniflare/kv";
 import { MemoryStorage } from "@miniflare/storage-memory";
 const STORAGE = new KVNamespace(new MemoryStorage());
-// initialize data here
 
 // Expose similar globals to what is available in a worker.
 Object.assign(globalThis, Streams, {
