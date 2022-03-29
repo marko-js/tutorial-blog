@@ -1,10 +1,8 @@
 import { formatDate } from "../../utils";
 
 static async function getPost(id) {
-  const intId = parseInt(id, 10);
   const result = await STORAGE.get("posts", { type: "json" });
-
-  return result.data.find((post) => post.id === intId);
+  return result.data.find((post) => post.id === id);
 }
 static async function getComments(id) {
   const storedComments = await STORAGE.get(`comments:${id}`, {

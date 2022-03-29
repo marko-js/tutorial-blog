@@ -14,7 +14,7 @@ class {
     });
     const comment = await res.json();
     this.state.comments = [...this.state.comments, comment];
-    setTimeout(() => window.scrollTo(0, document.body.scrollHeight));
+    this.once("update", () => window.scrollTo(0, document.body.scrollHeight));
   }
 }
 
